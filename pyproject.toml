@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pyitau-browser"
+version = "0.0.1"
+description = ""
+authors = ["André Roggeri Campos <a.roggeri.c@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest-playwright = "^0.4.4"
+python-dateutil = "^2.9.0.post0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
