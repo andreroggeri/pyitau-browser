@@ -1,4 +1,4 @@
-import locale
+# import locale
 from datetime import datetime
 from typing import TypedDict, List, Optional
 
@@ -36,7 +36,7 @@ class AccountStatement(TypedDict):
 class Itau:
     
     def __init__(self):
-        locale.setlocale(locale.LC_ALL, 'pt_BR')
+        # locale.setlocale(locale.LC_ALL, 'pt_BR')
         self.playwright = sync_playwright().start()
         self.browser = self.playwright.chromium.launch(headless=True)
         self.context = self.browser.new_context(
