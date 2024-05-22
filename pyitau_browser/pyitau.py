@@ -47,8 +47,8 @@ class Itau:
     def login(self, branch, account_no, password):
         self.page.goto('https://www.itau.com.br/')
         
-        self.page.type('id=agencia', branch)
-        self.page.type('id=conta', account_no)
+        self.page.get_by_placeholder('agência').type(branch)
+        self.page.get_by_placeholder('conta').type(account_no)
         self.page.get_by_role("button", name="Acessar").click()
         
         keypass_container = self.page.wait_for_selector('css=div.teclas.clearfix')
