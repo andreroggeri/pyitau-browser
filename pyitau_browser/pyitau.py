@@ -42,12 +42,22 @@ class Itau:
         self.context.tracing.start(screenshots=True, snapshots=True)
         self.page = self.context.new_page()
     
-    def login(self, branch, account_no, password):
+    def login(self, branch: str, account_no: str, password: str, token: Optional[str] = None):
         self.page.goto('https://www.itau.com.br/')
         
         self.page.get_by_placeholder('agência').type(branch)
         self.page.get_by_placeholder('conta').type(account_no)
         self.page.get_by_role("button", name="Acessar").click()
+        
+        self.page.wait_for_url('/router-app/router#30horas')
+        is_token_required = self._check_token_required()
+        
+        if is_token_required:
+            if not token:
+                raise ValueError('Itaú is requiring your token, please provide it once')
+            
+            self.page.locator('id=app-entraCodigo').fill(token)
+            self.page.click('id=app-codigoOk')
         
         keypass_container = self.page.wait_for_selector('css=div.teclas.clearfix')
         for digit in password:
@@ -135,3 +145,12 @@ class Itau:
         tables = self.page.query_selector_all('css=table.fatura__table:not(.fatura__table--detalhes-saldo)')
         parsed = parsed + extract_statements_from_tables(tables)
         return parsed
+    
+    def _check_token_required(self):
+        token_container = self.page.locator('css=#security_bottom')
+        
+        try:
+            token_container.wait_for(timeout=5000)
+            return True
+        except:
+            return False
